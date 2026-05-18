@@ -1193,6 +1193,229 @@ footer {
 
 <script>
 /* ══════════════════════════════════════════
+   CONTENT HYDRATION — kick off immediately
+   so DOM is ready before animations start
+══════════════════════════════════════════ */
+const _contentReady = fetch('/api/content')
+  .then(r => r.json())
+  .then(d => { _hydrateContent(d); return d; })
+  .catch(() => null); /* fail silently — hardcoded content remains */
+
+function _hydrateContent(d) {
+  if (!d) return;
+
+  /* ── Hero ─────────────────────────────── */
+  const h = d.hero || {};
+  const eyebrow = document.querySelector('.hero-eyebrow span');
+  if (eyebrow && h.eyebrow) eyebrow.textContent = h.eyebrow;
+
+  const hnInners = document.querySelectorAll('.hn-inner');
+  if (hnInners[0] && h.nameLine1) hnInners[0].textContent = h.nameLine1;
+  if (hnInners[1] && h.nameLine2) hnInners[1].textContent = h.nameLine2;
+
+  const tagline = document.querySelector('.hero-tagline');
+  if (tagline && h.tagline) tagline.textContent = h.tagline;
+
+  if (h.tags && h.tags.length) {
+    const tagsEl = document.querySelector('.hero-tags');
+    if (tagsEl) tagsEl.innerHTML = h.tags.map(t => `<span class="hero-tag">${_esc(t)}</span>`).join('');
+  }
+
+  if (h.heroImage) {
+    const el = document.getElementById('hero-img-el');
+    if (el) el.innerHTML = `<img src="${h.heroImage}" alt="Andrew Muti">`;
+  }
+
+  /* ── Nav ──────────────────────────────── */
+  if (d.nav?.availability) {
+    const na = document.querySelector('.nav-avail');
+    if (na) na.textContent = d.nav.availability;
+  }
+
+  /* ── Intro ────────────────────────────── */
+  const intro = d.intro || {};
+  if (intro.greeting) {
+    const lines   = intro.greeting.split('\n');
+    const igItems = document.querySelectorAll('.ig-inner');
+    lines.forEach((l, i) => { if (igItems[i]) igItems[i].textContent = l; });
+  }
+  if (intro.paragraphs) {
+    const ps = document.querySelectorAll('.intro-body p');
+    intro.paragraphs.forEach((p, i) => { if (ps[i]) ps[i].innerHTML = p; });
+  }
+  if (intro.signature) {
+    const sig = document.querySelector('.intro-sig');
+    if (sig) sig.textContent = intro.signature;
+  }
+  if (intro.photo) {
+    const el = document.getElementById('intro-photo-el');
+    if (el) {
+      const badge = el.querySelector('.intro-photo-badge');
+      el.innerHTML = `<img src="${intro.photo}" alt="Andrew Muti">`;
+      if (badge) el.appendChild(badge);
+    }
+  }
+  const sv = document.querySelector('.intro-stat-val');
+  const sl = document.querySelector('.intro-stat-lbl');
+  if (sv && intro.statValue) sv.textContent = intro.statValue;
+  if (sl && intro.statLabel) sl.textContent = intro.statLabel;
+
+  /* ── Story ────────────────────────────── */
+  if (d.story && d.story.length) {
+    const storyList = document.querySelector('.story-list');
+    if (storyList) {
+      storyList.innerHTML = d.story.map(ch => `
+        <div class="story-item">
+          <div class="story-num">${_esc(ch.num)}</div>
+          <div class="story-content">
+            <h3 class="story-heading"><span class="sh-inner">${_esc(ch.heading)}</span></h3>
+            <p class="story-text">${_esc(ch.body)}</p>
+          </div>
+          <div class="story-img-wrap">
+            <img src="${ch.image || 'https://placehold.co/700x525?text=Story'}" alt="${_esc(ch.heading)}" loading="lazy">
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  /* ── Projects ─────────────────────────── */
+  if (d.projects && d.projects.length) {
+    const grid = document.querySelector('.proj-grid');
+    if (grid) {
+      grid.innerHTML = d.projects.map(p => `
+        <div class="proj-card">
+          <div class="proj-accent ${_esc(p.color)}"></div>
+          <div class="proj-cover">
+            ${p.image
+              ? `<img src="${p.image}" alt="${_esc(p.title)}">`
+              : `<div class="proj-cover-lbl">${_esc(p.title)}</div>`}
+          </div>
+          <div class="proj-info">
+            <p class="proj-cat">${_esc(p.category)}</p>
+            <h3 class="proj-title">${_esc(p.title)}</h3>
+            <p class="proj-role">${_esc(p.role)}</p>
+            <p class="proj-summary">${_esc(p.summary)}</p>
+            <a class="proj-link" href="${_esc(p.link || '#')}">View Project</a>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  /* ── Stats ────────────────────────────── */
+  if (d.stats && d.stats.length) {
+    const sg = document.querySelector('.stats-grid');
+    if (sg) {
+      const clrs = ['', 'mu', 'gr', '', 'mu', 'gr'];
+      sg.innerHTML = d.stats.map((s, i) => `
+        <div class="stat-item">
+          <div class="stat-val${clrs[i] ? ' ' + clrs[i] : ''}">${_esc(s.value)}</div>
+          <div class="stat-lbl">${_esc(s.label)}</div>
+        </div>`).join('');
+    }
+  }
+
+  /* ── Experience ───────────────────────── */
+  if (d.experience && d.experience.length) {
+    const el = document.querySelector('.exp-list');
+    if (el) {
+      el.innerHTML = d.experience.map(e => `
+        <div class="exp-row">
+          <span class="exp-period">${_esc(e.period)}</span>
+          <div class="exp-body">
+            <h3 class="exp-company">${_esc(e.company)}</h3>
+            <p class="exp-role">${_esc(e.role)}</p>
+            <p class="exp-desc">${_esc(e.description)}</p>
+          </div>
+          <span class="exp-arr">↗</span>
+        </div>`).join('');
+    }
+  }
+
+  if (d.education && d.education.length) {
+    const eg = document.querySelector('.edu-grid');
+    if (eg) {
+      eg.innerHTML = d.education.map(e => `
+        <div class="edu-card">
+          <p class="edu-inst">${_esc(e.institution)}</p>
+          <p class="edu-course">${_esc(e.course)}</p>
+        </div>`).join('');
+    }
+  }
+
+  /* ── Skills ───────────────────────────── */
+  if (d.skills && d.skills.length) {
+    const sg = document.querySelector('.skills-grid');
+    if (sg) {
+      sg.innerHTML = d.skills.map(s => `
+        <div class="skill-group">
+          <div class="skill-cat-row">
+            <span class="sk-dot ${_esc(s.color)}"></span>
+            <span class="skill-cat">${_esc(s.category)}</span>
+          </div>
+          <div class="skill-tags">
+            ${(s.tags || []).map(t => `<span class="sk-tag">${_esc(t)}</span>`).join('')}
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  /* ── Principles ───────────────────────── */
+  if (d.principles) {
+    const pq = document.querySelector('.principles-quote');
+    if (pq && d.principles.quote) pq.textContent = '“' + d.principles.quote + '”';
+
+    if (d.principles.items && d.principles.items.length) {
+      const pg = document.querySelector('.principles-grid');
+      if (pg) {
+        pg.innerHTML = d.principles.items.map(p => `
+          <div class="p-item">
+            <div class="p-num">${_esc(p.num)}</div>
+            <h3 class="p-title">${_esc(p.title)}</h3>
+            <p class="p-body">${_esc(p.body)}</p>
+          </div>`).join('');
+      }
+    }
+  }
+
+  /* ── Contact ──────────────────────────── */
+  const ct = d.contact || {};
+  if (ct.headline) {
+    const lines   = ct.headline.split('\n');
+    const cqLines = document.querySelectorAll('.cq-line');
+    lines.forEach((l, i) => {
+      const inner = cqLines[i] && cqLines[i].querySelector('.cq-inner');
+      if (inner) inner.textContent = l;
+    });
+  }
+  if (ct.intro) {
+    const ci = document.querySelector('.contact-intro');
+    if (ci) ci.textContent = ct.intro;
+  }
+  const cdItems = document.querySelectorAll('.cd-item .cd-val');
+  if (cdItems[0] && ct.email) {
+    cdItems[0].innerHTML = `<a href="mailto:${_esc(ct.email)}">${_esc(ct.email)}</a>`;
+  }
+  if (cdItems[1] && ct.phone) cdItems[1].textContent = ct.phone;
+  if (cdItems[2] && ct.webUrl) {
+    cdItems[2].innerHTML = `<a href="${_esc(ct.webUrl)}" target="_blank" rel="noopener">${_esc(ct.web || ct.webUrl)}</a>`;
+  }
+  if (cdItems[3] && ct.location) cdItems[3].textContent = ct.location;
+
+  /* ── Social ───────────────────────────── */
+  const s = d.social || {};
+  const li = document.getElementById('ft-linkedin');
+  const be = document.getElementById('ft-behance');
+  const ig = document.getElementById('ft-instagram');
+  if (li && s.linkedin && s.linkedin !== '#') li.href = s.linkedin;
+  if (be && s.behance  && s.behance  !== '#') be.href  = s.behance;
+  if (ig && s.instagram&& s.instagram!== '#') ig.href  = s.instagram;
+}
+
+function _esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ══════════════════════════════════════════
    CUSTOM CURSOR
 ══════════════════════════════════════════ */
 (function() {
@@ -1296,8 +1519,8 @@ function kickHero() {
   // Orb
   tl.to('.hero-orb', { opacity: .82, duration: 1.2 }, .8);
 
-  // After hero appears, init Loco + ScrollTrigger
-  tl.call(initScroll, [], 0.6);
+  // Wait for API hydration to finish, then init scroll (ensures rebuilt DOM is measured correctly)
+  tl.call(() => _contentReady.then(() => initScroll()), [], 0.6);
 }
 
 /* ══════════════════════════════════════════
@@ -1549,27 +1772,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   btn.textContent = 'Send Message →'; btn.disabled = false;
 });
 
-/* ══════════════════════════════════════════
-   CONTENT.JSON HYDRATION
-══════════════════════════════════════════ */
-fetch('/content.json').then(r => r.json()).then(d => {
-  if (d.hero?.heroImage) {
-    const el = document.getElementById('hero-img-el');
-    if (el) el.innerHTML = `<img src="${d.hero.heroImage}" alt="Andrew Muti">`;
-  }
-  if (d.intro?.photo) {
-    const el = document.getElementById('intro-photo-el');
-    if (el) {
-      const badge = el.querySelector('.intro-photo-badge');
-      el.innerHTML = `<img src="${d.intro.photo}" alt="Andrew Muti">`;
-      if (badge) el.appendChild(badge);
-    }
-  }
-  const s = d.social || {};
-  if (s.linkedin && s.linkedin !== '#') document.getElementById('ft-linkedin').href = s.linkedin;
-  if (s.behance  && s.behance  !== '#') document.getElementById('ft-behance').href  = s.behance;
-  if (s.instagram&& s.instagram!== '#') document.getElementById('ft-instagram').href= s.instagram;
-}).catch(() => {});
+/* _contentReady fetch + _hydrateContent are defined at the top of this script */
 </script>
 
 </body>

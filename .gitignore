@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# SQLite database (runtime data — do not commit)
+portfolio.db
+portfolio.db-shm
+portfolio.db-wal
+*.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

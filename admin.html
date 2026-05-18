@@ -359,7 +359,7 @@
 
         <!-- SAVE INSTRUCTIONS -->
         <div class="save-instructions">
-          <strong>How to publish changes:</strong> Click <strong>Save Changes</strong> to save locally, then click <strong>Export JSON</strong> to download <code>content.json</code>. Upload it to your GitHub repo — Vercel will auto-deploy in ~30 seconds.
+          <strong>Connected to live database.</strong> Click <strong>Save Changes</strong> to publish updates instantly to the site. Use <strong>Export JSON</strong> to download a backup of your content.
         </div>
 
         <!-- HERO PANEL -->
@@ -630,85 +630,88 @@
      STATE
   ============================================================ */
   let content = {};
-  let loginAttempts = 0;
-  const LOCK_KEY = 'adminLockUntil';
-  const AUTH_KEY = 'adminAuthed';
-  const CONTENT_KEY = 'siteContent';
+  let submissions = [];
+  let token = null;
+  const TOKEN_KEY = 'amAdminToken';
+
+  /* ============================================================
+     API HELPER
+  ============================================================ */
+  async function api(method, path, body) {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    const res = await fetch(path, opts);
+    if (res.status === 401) { doLogout(); return null; }
+    try { return await res.json(); } catch { return null; }
+  }
 
   /* ============================================================
      LOGIN
   ============================================================ */
-  function checkLock() {
-    const lockUntil = parseInt(localStorage.getItem(LOCK_KEY) || '0');
-    if (Date.now() < lockUntil) {
-      const mins = Math.ceil((lockUntil - Date.now()) / 60000);
-      document.getElementById('loginError').textContent = `Too many attempts. Try again in ${mins} minute(s).`;
-      document.getElementById('loginInput').disabled = true;
-      document.getElementById('loginBtn').disabled = true;
-      return true;
+  async function tryLogin() {
+    const val = document.getElementById('loginInput').value.trim();
+    if (!val) return;
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    try {
+      const data = await api('POST', '/api/admin/login', { password: val });
+      if (data && data.token) {
+        token = data.token;
+        localStorage.setItem(TOKEN_KEY, token);
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminApp').classList.add('visible');
+        await loadContent();
+        renderAll();
+      } else {
+        const box = document.querySelector('.login-box');
+        box.classList.remove('login-shake');
+        void box.offsetWidth;
+        box.classList.add('login-shake');
+        document.getElementById('loginError').textContent = 'Wrong passcode. Try again.';
+      }
+    } catch {
+      document.getElementById('loginError').textContent = 'Could not connect to server.';
     }
-    return false;
+    btn.disabled = false;
   }
 
-  async function tryLogin() {
-    if (checkLock()) return;
-    const val = document.getElementById('loginInput').value;
-    const stored = content.settings?.adminPassword || 'dreey2026';
-    if (val === stored) {
-      localStorage.setItem(AUTH_KEY, '1');
-      loginAttempts = 0;
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminApp').classList.add('visible');
-      renderAll();
-    } else {
-      loginAttempts++;
-      const box = document.querySelector('.login-box');
-      box.classList.remove('login-shake');
-      void box.offsetWidth;
-      box.classList.add('login-shake');
-      document.getElementById('loginError').textContent =
-        `Wrong passcode. ${5 - loginAttempts} attempt(s) left.`;
-      if (loginAttempts >= 5) {
-        localStorage.setItem(LOCK_KEY, Date.now() + 10 * 60 * 1000);
-        document.getElementById('loginError').textContent = 'Locked for 10 minutes after 5 failed attempts.';
-        document.getElementById('loginInput').disabled = true;
-        document.getElementById('loginBtn').disabled = true;
-      }
-    }
+  function doLogout() {
+    localStorage.removeItem(TOKEN_KEY);
+    token = null;
+    location.reload();
   }
 
   document.getElementById('loginBtn').addEventListener('click', tryLogin);
   document.getElementById('loginInput').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    localStorage.removeItem(AUTH_KEY);
-    location.reload();
-  });
+  document.getElementById('logoutBtn').addEventListener('click', doLogout);
 
   /* ============================================================
      LOAD CONTENT
   ============================================================ */
-  async function init() {
-    // Try localStorage first (saved admin state)
-    const saved = localStorage.getItem(CONTENT_KEY);
-    if (saved) {
-      try { content = JSON.parse(saved); } catch(_) {}
-    }
-    // Merge with fetched content.json (for fields not yet in localStorage)
-    try {
-      const res = await fetch('/content.json?' + Date.now());
-      const fresh = await res.json();
-      if (!saved) content = fresh;
-      else {
-        // Keep localStorage version but fill in any missing top-level keys
-        Object.keys(fresh).forEach(k => { if (!(k in content)) content[k] = fresh[k]; });
-      }
-    } catch(e) { if (!content.hero) showToast('Could not load content.json', 'error'); }
+  async function loadContent() {
+    const data = await api('GET', '/api/admin/content');
+    if (data) content = data;
+  }
 
-    // Check auth
-    if (localStorage.getItem(AUTH_KEY) === '1' && !checkLock()) {
+  async function loadSubmissions() {
+    const data = await api('GET', '/api/admin/submissions');
+    if (data) submissions = data;
+  }
+
+  async function init() {
+    const saved = localStorage.getItem(TOKEN_KEY);
+    if (!saved) return; // Show login screen
+    token = saved;
+    const data = await api('GET', '/api/admin/content');
+    if (data) {
+      content = data;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminApp').classList.add('visible');
       renderAll();
+    } else {
+      token = null;
+      localStorage.removeItem(TOKEN_KEY);
     }
   }
 
@@ -1207,20 +1210,20 @@
   function addPrinciple() { content.principles.items.push({num:`0${content.principles.items.length+1}`,title:'NEW PRINCIPLE',body:''}); renderPrinciples(); }
 
   /* ============================================================
-     SUBMISSIONS
+     SUBMISSIONS  (API-backed)
   ============================================================ */
   function renderSubmissionsBadge() {
-    const subs = content.submissions || [];
-    const unread = subs.filter(s => !s.read).length;
+    const unread = submissions.filter(s => !s.is_read).length;
     const badge = document.getElementById('subBadge');
     if (unread > 0) { badge.textContent = unread; badge.style.display = 'inline-block'; }
     else badge.style.display = 'none';
   }
 
-  function renderSubmissions() {
+  async function renderSubmissions() {
+    await loadSubmissions();
+    renderSubmissionsBadge();
     const el = document.getElementById('submissionsTable');
-    const subs = content.submissions || [];
-    if (!subs.length) {
+    if (!submissions.length) {
       el.innerHTML = '<div class="empty-state">No submissions yet. Messages sent through the contact form will appear here.</div>';
       return;
     }
@@ -1230,39 +1233,49 @@
           <th>Date</th><th>Name</th><th>Email</th><th>Service</th><th>Message</th><th></th>
         </tr></thead>
         <tbody>
-          ${subs.map((s,i) => `
-            <tr class="${s.read?'':'sub-unread'}">
-              <td style="white-space:nowrap;">${new Date(s.date).toLocaleDateString()}</td>
+          ${submissions.map(s => `
+            <tr class="${s.is_read ? '' : 'sub-unread'}">
+              <td style="white-space:nowrap;">${new Date(s.created_at).toLocaleDateString()}</td>
               <td>${esc(s.name)}</td>
               <td><a href="mailto:${esc(s.email)}" style="color:var(--rust)">${esc(s.email)}</a></td>
-              <td>${esc(s.service||'—')}</td>
-              <td style="max-width:280px;">${esc(s.message||'')}</td>
+              <td>${esc(s.service || '—')}</td>
+              <td style="max-width:280px;">${esc(s.message || '')}</td>
               <td style="white-space:nowrap;">
-                ${!s.read ? `<button class="btn btn-secondary btn-sm" onclick="markRead(${i})">Mark read</button>` : '<span style="color:var(--muted);font-size:0.7rem;">Read</span>'}
-                <button class="btn btn-danger btn-sm" onclick="deleteSub(${i})" style="margin-left:0.25rem;">×</button>
+                ${!s.is_read
+                  ? `<button class="btn btn-secondary btn-sm" onclick="markRead(${s.id})">Mark read</button>`
+                  : '<span style="color:var(--muted);font-size:0.7rem;">Read</span>'}
+                <button class="btn btn-danger btn-sm" onclick="deleteSub(${s.id})" style="margin-left:0.25rem;">×</button>
               </td>
-            </tr>
-          `).join('')}
+            </tr>`).join('')}
         </tbody>
-      </table>
-    `;
-    // Mark all as read
-    content.submissions.forEach(s => s.read = true);
-    renderSubmissionsBadge();
+      </table>`;
   }
 
-  function markRead(i) { content.submissions[i].read = true; renderSubmissions(); saveContent(); }
-  function deleteSub(i) { if(!confirm('Delete this submission?'))return; content.submissions.splice(i,1); renderSubmissions(); saveContent(); }
-  function clearAllSubmissions() { if(!confirm('Clear ALL submissions? This cannot be undone.'))return; content.submissions=[]; renderSubmissions(); saveContent(); }
+  async function markRead(id) {
+    await api('PUT', `/api/admin/submissions/${id}/read`);
+    renderSubmissions();
+  }
+
+  async function deleteSub(id) {
+    if (!confirm('Delete this submission?')) return;
+    await api('DELETE', `/api/admin/submissions/${id}`);
+    renderSubmissions();
+  }
+
+  async function clearAllSubmissions() {
+    if (!confirm('Clear ALL submissions? This cannot be undone.')) return;
+    await api('DELETE', '/api/admin/submissions');
+    submissions = [];
+    renderSubmissions();
+  }
 
   function exportSubmissionsCSV() {
-    const subs = content.submissions || [];
-    if (!subs.length) { showToast('No submissions to export', 'error'); return; }
-    const headers = ['Date','Name','Email','Service','Message'];
-    const rows = subs.map(s => [
-      new Date(s.date).toLocaleString(),
-      s.name, s.email, s.service||'', s.message||''
-    ].map(v => `"${String(v).replace(/"/g,'""')}"`));
+    if (!submissions.length) { showToast('No submissions to export', 'error'); return; }
+    const headers = ['Date', 'Name', 'Email', 'Service', 'Message'];
+    const rows = submissions.map(s => [
+      new Date(s.created_at).toLocaleString(),
+      s.name, s.email, s.service || '', s.message || ''
+    ].map(v => `"${String(v).replace(/"/g, '""')}"`));
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     download('submissions.csv', csv, 'text/csv');
     showToast('CSV downloaded', 'success');
@@ -1271,33 +1284,40 @@
   /* ============================================================
      SETTINGS
   ============================================================ */
-  function changePasscode() {
+  async function changePasscode() {
     const val = document.getElementById('newPasscode').value.trim();
-    if (!val) { showToast('Enter a passcode first', 'error'); return; }
-    if (!content.settings) content.settings = {};
-    content.settings.adminPassword = val;
-    saveContent();
-    document.getElementById('newPasscode').value = '';
-    showToast('Passcode updated', 'success');
+    if (!val || val.length < 4) { showToast('Passcode must be at least 4 characters', 'error'); return; }
+    const res = await api('PUT', '/api/admin/password', { password: val });
+    if (res && res.ok) {
+      document.getElementById('newPasscode').value = '';
+      showToast('Passcode updated — re-login required next time', 'success');
+    } else {
+      showToast('Failed to update passcode', 'error');
+    }
   }
 
   /* ============================================================
      SAVE & EXPORT
   ============================================================ */
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    saveContent();
-    showToast('Changes saved locally', 'success');
+  document.getElementById('saveBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    // Strip out any submissions key — those live in their own table
+    const payload = Object.fromEntries(Object.entries(content).filter(([k]) => k !== 'submissions'));
+    const res = await api('PUT', '/api/admin/content', payload);
+    if (res && res.ok) {
+      showToast('Changes saved to database!', 'success');
+    } else {
+      showToast('Save failed — check server connection', 'error');
+    }
+    btn.disabled = false; btn.textContent = 'Save Changes';
   });
 
   document.getElementById('exportBtn').addEventListener('click', () => {
     const json = JSON.stringify(content, null, 2);
     download('content.json', json, 'application/json');
-    showToast('content.json downloaded — upload to GitHub to publish', 'success');
+    showToast('content.json backup downloaded', 'success');
   });
-
-  function saveContent() {
-    localStorage.setItem(CONTENT_KEY, JSON.stringify(content));
-  }
 
   function download(filename, text, type) {
     const a = document.createElement('a');

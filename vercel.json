@@ -1,21 +1,13 @@
 {
-  "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" }
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
   ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
-    },
-    {
-      "source": "/content.json",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    }
-  ]
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
+  ],
+  "env": {
+    "JWT_SECRET": "@jwt_secret",
+    "ADMIN_PASSWORD": "@admin_password"
+  }
 }
