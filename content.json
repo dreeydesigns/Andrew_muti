@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "title": "Andrew Muti — Creative Director",
+    "description": "Andrew Muti — Creative Director, brand strategist, and founder of Dreeydesigns. Building brand systems for serious companies in Nairobi and globally.",
+    "ogImage": ""
+  },
+  "nav": {
+    "availability": "Available for new projects"
+  },
+  "hero": {
+    "eyebrow": "Creative Director · Nairobi, Kenya",
+    "nameLine1": "ANDREW",
+    "nameLine2": "MUTI",
+    "tagline": "Founder of Dreeydesigns. Strategist. Art Director. The creative behind some of East Africa's most recognized brand campaigns — and building the next generation of African storytelling from Nairobi.",
+    "tags": ["Brand Strategy", "Art Direction", "AI-Integrated Workflow", "Nairobi · Remote"],
+    "availability": "Available for new projects",
+    "heroImage": ""
+  },
+  "marquee": [
+    "BRAND STRATEGY", "ART DIRECTION", "VISUAL IDENTITY", "AI-INTEGRATED WORKFLOW",
+    "CAMPAIGN DESIGN", "EDITORIAL DESIGN", "WEB DESIGN", "NAIROBI-MADE", "WORLD-CLASS", "DREEYDESIGNS"
+  ],
+  "intro": {
+    "greeting": "Hi. I'm Andrew.\nAlso Andy, or Dreey.",
+    "paragraphs": [
+      "I'm a Creative Director and brand strategist based in Nairobi, Kenya. I founded <strong>Dreeydesigns</strong> in 2019 — not as a freelance side hustle, but as a proper studio with a methodology, a positioning, and a belief that world-class creative work could be built and delivered from right here in Nairobi.",
+      "For the past seven years, I've directed campaigns for <strong>Range Rover</strong>, <strong>Land Cruiser Lexus</strong>, and <strong>Jack Daniel's</strong>. I've built brand systems for hospitals, safari companies, churches, retail brands, and tech startups. And I've done it all using tools most agencies in this region haven't even heard of yet.",
+      "That gap between what I know and what most are doing? That's the moat. That's <strong>Dreeydesigns</strong>."
+    ],
+    "signature": "— Andrew",
+    "photo": "",
+    "statValue": "7+",
+    "statLabel": "Years in the industry"
+  },
+  "story": [
+    {
+      "num": "01",
+      "heading": "IT STARTED WITH A SKETCHBOOK",
+      "body": "Long before brand strategy or client briefs, there was a kid in Nairobi filling notebooks with type experiments, logo sketches, and visual ideas that had nowhere to go yet. I didn't know it then, but I was already doing the work. Art was the language I reached for before I understood it as a career.",
+      "image": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&q=80"
+    },
+    {
+      "num": "02",
+      "heading": "TRAINED. THEN SELF-TAUGHT.",
+      "body": "Nairobits Trust. Nairobi Technical Training Institute. Shang Tao Media Art College. I took the foundations seriously. But the real education happened after hours — studying international agencies, reverse-engineering great campaigns, teaching myself what institutions don't have the courage to teach. The industry moves faster than any curriculum. I learned to move with it.",
+      "image": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80"
+    },
+    {
+      "num": "03",
+      "heading": "DREEYDESIGNS WAS NEVER A SIDE PROJECT",
+      "body": "In 2019, I launched Dreeydesigns with a clear model: one studio, high-value clients, no compromises on quality. I chose premium positioning deliberately. The work I wanted to do — the Range Rovers, the hospitality brands, the campaigns that actually move people — only comes when you charge for the thinking, not just the execution. Within two years, the studio had seven active brand verticals and clients across Kenya, the UK, and the US.",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80"
+    },
+    {
+      "num": "04",
+      "heading": "WHEN AI ARRIVED, I LEANED IN",
+      "body": "When AI tools hit the creative industry, most agencies panicked. I saw an opportunity. I built automation pipelines with N8N. I integrated Claude, ChatGPT, and Gemini into my workflow. I started delivering in days what used to take weeks — at higher quality. The studios that waited? They're still waiting. At Dreeydesigns, AI isn't a replacement for craft. It's the amplifier of it.",
+      "image": "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80"
+    },
+    {
+      "num": "05",
+      "heading": "NAIROBI. BUT NEVER SMALL.",
+      "body": "I'm proud to build from Nairobi. The city has shaped my eye, my instincts, and my hunger. But I've always designed for a global audience. The brands I build don't whisper — they command attention in boardrooms, on billboards, and on screens in cities I've never visited. That's the standard. That's what I wake up to build every day. And right now, I'm building something even bigger: HADITHI — an African children's animation brand that will bring our continent's stories to the world.",
+      "image": "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80"
+    }
+  ],
+  "projects": [
+    {
+      "id": "dreeydesigns",
+      "category": "Brand Identity · Studio",
+      "title": "DREEYDESIGNS",
+      "role": "Founder & Creative Director",
+      "color": "rust",
+      "summary": "Brand system for a Nairobi-based AI-forward creative studio. Full identity: logo, type system, tone of voice, content strategy, and a 6-platform publishing pipeline.",
+      "image": "",
+      "link": "#"
+    },
+    {
+      "id": "range-rover",
+      "category": "Campaign · Automotive",
+      "title": "RANGE ROVER CENTRE",
+      "role": "Art Director · 2024–Present",
+      "color": "green",
+      "summary": "Art direction for Kenya's premier Range Rover dealership. Visual campaigns, social media direction, and brand consistency across digital and physical touchpoints.",
+      "image": "",
+      "link": "#"
+    },
+    {
+      "id": "hadithi",
+      "category": "Brand Identity · Children's Media",
+      "title": "HADITHI",
+      "role": "Founder & Creative Director",
+      "color": "mustard",
+      "summary": "An original African children's animation and educational content brand. Brand ambassador: Zara Amara. A geographic and historical journey through African civilisations, starting in Turkana, Kenya.",
+      "image": "",
+      "link": "#"
+    },
+    {
+      "id": "salaton",
+      "category": "Social Media · Tourism",
+      "title": "SALATON SAFARIS",
+      "role": "Social Media Director",
+      "color": "cobalt",
+      "summary": "Full social media management, boosted ad campaigns, and monthly performance reporting for a premium East African safari operator. Results: measurable engagement growth across platforms.",
+      "image": "",
+      "link": "#"
+    },
+    {
+      "id": "tulopots",
+      "category": "Brand Identity · E-Commerce",
+      "title": "TULOPOTS",
+      "role": "Founder & Creative Director",
+      "color": "magenta",
+      "summary": "Premium Nairobi terracotta brand. Full brand bible, e-commerce website (Next.js, M-Pesa / Stripe integration), and social strategy built from the ground up.",
+      "image": "",
+      "link": "#"
+    },
+    {
+      "id": "lexus",
+      "category": "Campaign · Automotive",
+      "title": "LAND CRUISER LEXUS",
+      "role": "Art Director · 2025–Present",
+      "color": "rust",
+      "summary": "Art direction and campaign design for one of Nairobi's top luxury automotive centres. Consistent brand presence across digital channels and printed materials.",
+      "image": "",
+      "link": "#"
+    }
+  ],
+  "stats": [
+    { "value": "+13,700%", "label": "Engagement growth delivered for a single client" },
+    { "value": "1,050+", "label": "Creative assets produced" },
+    { "value": "8,000+", "label": "Community members managed" },
+    { "value": "7", "label": "Active brand verticals" },
+    { "value": "6+", "label": "Years running Dreeydesigns" },
+    { "value": "3", "label": "Continents served" }
+  ],
+  "experience": [
+    {
+      "period": "2024 – Present",
+      "company": "Range Rover Centre Nairobi",
+      "role": "Art Director",
+      "description": "Visual campaigns, social media direction, and brand consistency for Kenya's premier Range Rover dealership."
+    },
+    {
+      "period": "2025 – Present",
+      "company": "Land Cruiser Lexus Centre",
+      "role": "Art Director",
+      "description": "Art direction and campaign design for a flagship luxury automotive brand in Nairobi."
+    },
+    {
+      "period": "2024 – 2025",
+      "company": "Meekay Lee Group",
+      "role": "Brand Consultant",
+      "description": "Brand strategy and campaign execution across multiple verticals including Salaton Safaris Arusha."
+    },
+    {
+      "period": "2023 – 2024",
+      "company": "Hubthrill",
+      "role": "Senior Designer",
+      "description": "Led design across digital products, social media, and marketing collateral for a Nairobi-based agency."
+    },
+    {
+      "period": "2019 – Present",
+      "company": "Dreeydesigns",
+      "role": "Founder & Creative Director",
+      "description": "Built and run a full-service AI-forward brand studio serving clients across Kenya, the UK, and the US."
+    }
+  ],
+  "education": [
+    { "institution": "Shang Tao Media Art College", "course": "Graphic Design & Media Arts" },
+    { "institution": "Nairobi Technical Training Institute", "course": "Design Technology" },
+    { "institution": "Nairobits Trust", "course": "Digital Design Foundations" }
+  ],
+  "skills": [
+    {
+      "category": "Brand Strategy",
+      "color": "rust",
+      "tags": ["Brand Positioning", "Visual Identity", "Brand Bible Development", "Tone of Voice", "Naming"]
+    },
+    {
+      "category": "Art Direction",
+      "color": "green",
+      "tags": ["Campaign Direction", "Photography Direction", "Layout", "Editorial Design", "Typography"]
+    },
+    {
+      "category": "Digital Design",
+      "color": "mustard",
+      "tags": ["Social Media Design", "Web Design", "UI/UX", "Motion Graphics", "Figma", "Adobe XD"]
+    },
+    {
+      "category": "Production",
+      "color": "cobalt",
+      "tags": ["Photoshop", "Illustrator", "InDesign", "Canva", "Premiere Pro"]
+    },
+    {
+      "category": "AI & Automation",
+      "color": "magenta",
+      "tags": ["N8N", "OpenAI API", "Claude", "ChatGPT", "Gemini", "GitHub Copilot", "Blotato", "Apify"]
+    },
+    {
+      "category": "Business",
+      "color": "rust",
+      "tags": ["Client Management", "SMMA Model", "Content Strategy", "Performance Reporting"]
+    }
+  ],
+  "principles": {
+    "quote": "For me, design is about commanding attention, communicating with precision, and building something that lasts beyond the brief.",
+    "items": [
+      {
+        "num": "01",
+        "title": "AI IS YOUR LEVERAGE",
+        "body": "The creative industry is being reshaped. Most agencies are watching. At Dreeydesigns, we use AI as a competitive moat — delivering brand systems faster, smarter, and at higher quality than legacy studios. This isn't a threat to craft. It is the amplifier of it."
+      },
+      {
+        "num": "02",
+        "title": "BRAND SYSTEMS, NOT LOGOS",
+        "body": "A logo is a signature. A brand system is a language. I build the full vocabulary — visual, verbal, and behavioural — so your brand speaks the same way in every room it enters, long after the project is closed."
+      },
+      {
+        "num": "03",
+        "title": "STORY BEFORE STYLE",
+        "body": "Every visual decision is earned by a narrative reason. I start with the story — who you are, what you stand for, who you're talking to — before choosing a font or a colour. Style without story is decoration. Story without style is invisible. Both together? Unbeatable."
+      },
+      {
+        "num": "04",
+        "title": "NAIROBI FIRST. WORLD-CLASS ALWAYS.",
+        "body": "I am proud to build from Nairobi. Our visual culture, our ambition, our creative instinct is a feature — not a footnote. The world's best creative work will increasingly come from this continent. I am here to make sure it does."
+      }
+    ]
+  },
+  "contact": {
+    "headline": "LET'S BUILD\nSOMETHING REAL.",
+    "intro": "Have a project in mind? I'm currently taking select clients for brand strategy, visual identity, art direction, and campaign work. Based in Nairobi — working globally.",
+    "email": "Dreeydesigns@gmail.com",
+    "phone": "+254 743 817 931",
+    "web": "www.dreeydesigns.com",
+    "webUrl": "https://www.dreeydesigns.com",
+    "location": "Nairobi, Kenya · Remote-ready"
+  },
+  "social": {
+    "linkedin": "#",
+    "behance": "#",
+    "instagram": "#"
+  },
+  "settings": {
+    "adminPassword": "dreey2026",
+    "googleAnalyticsId": "",
+    "cloudinaryCloudName": "",
+    "cloudinaryUploadPreset": ""
+  },
+  "submissions": []
+}

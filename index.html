@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andrew Muti — Creative Director</title>
+  <meta name="description" content="Andrew Muti — Creative Director, brand strategist, and founder of Dreeydesigns. Building brand systems for serious companies in Nairobi and globally.">
+  <meta property="og:title" content="Andrew Muti — Creative Director">
+  <meta property="og:description" content="Founder of Dreeydesigns. AI-forward brand systems studio based in Nairobi, Kenya.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+
+  <!-- Locomotive Scroll CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+  <style>
+/* ─── TOKENS ──────────────────────────────────────────── */
+:root {
+  --bg:       #F8F4EE;
+  --bg-alt:   #F2EDE4;
+  --dark:     #0E0C09;
+  --ink:      #0E0C09;
+  --muted:    rgba(14,12,9,.5);
+  --faint:    rgba(14,12,9,.1);
+  --rule:     rgba(14,12,9,.09);
+
+  --rust:     #C94F34;
+  --mustard:  #D4A520;
+  --green:    #2A6B4A;
+  --cobalt:   #1C4ED8;
+  --magenta:  #BE185D;
+
+  --f-disp:   'Bebas Neue', sans-serif;
+  --f-serif:  'DM Serif Display', serif;
+  --f-body:   'Plus Jakarta Sans', -apple-system, sans-serif;
+  --ease:     cubic-bezier(.16,1,.3,1);
+}
+
+/* ─── RESET ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: var(--f-body);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+strong { font-weight: 600; }
+button { font-family: inherit; cursor: none; }
+@media (pointer:coarse) { body, button { cursor: auto; } }
+
+/* ─── CUSTOM CURSOR ───────────────────────────────────── */
+#cursor-dot {
+  position: fixed; top:0; left:0; z-index:9999;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--ink); pointer-events: none;
+  transform: translate(-50%,-50%);
+  transition: width .2s var(--ease), height .2s var(--ease),
+              background .2s, opacity .3s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  position: fixed; top:0; left:0; z-index:9998;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid rgba(14,12,9,.35); pointer-events: none;
+  transform: translate(-50%,-50%);
+  transition: width .45s var(--ease), height .45s var(--ease),
+              border-color .3s, opacity .3s;
+}
+body.cur-hover #cursor-dot  { width: 6px; height: 6px; }
+body.cur-hover #cursor-ring { width: 64px; height: 64px; border-color: var(--rust); }
+body.cur-dark  #cursor-dot  { background: #fff; mix-blend-mode: normal; }
+body.cur-dark  #cursor-ring { border-color: rgba(255,255,255,.3); }
+@media (pointer:coarse) { #cursor-dot, #cursor-ring { display:none; } }
+
+/* ─── LOADER ──────────────────────────────────────────── */
+#loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--dark);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2.5rem;
+  overflow: hidden;
+}
+.ld-name {
+  font-family: var(--f-disp);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: .25em; color: #F8F4EE;
+  display: flex; gap: .05em; overflow: hidden;
+}
+.ld-char {
+  display: inline-block;
+  transform: translateY(120%);
+}
+.ld-bar-wrap {
+  width: clamp(140px, 22vw, 220px);
+  height: 1.5px; background: rgba(255,255,255,.1);
+}
+.ld-bar {
+  height: 100%; width: 0;
+  background: var(--rust);
+  transform-origin: left;
+}
+.ld-count {
+  position: absolute; bottom: 2.5rem; right: 3rem;
+  font-size: .72rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+}
+
+/* ─── NAVIGATION ──────────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 0 clamp(1.5rem,5vw,4rem);
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .3s, box-shadow .3s, transform .4s var(--ease);
+}
+#nav.scrolled {
+  background: rgba(248,244,238,.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--rule);
+}
+#nav.hidden { transform: translateY(-100%); }
+.nav-logo {
+  font-family: var(--f-disp);
+  font-size: 1.05rem; letter-spacing: .14em;
+  opacity: 0;
+}
+.nav-links {
+  display: flex; align-items: center; gap: clamp(1.2rem,3vw,2.5rem);
+  list-style: none; opacity: 0;
+}
+.nav-links a {
+  font-size: .72rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  position: relative; transition: color .2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px; background: var(--rust);
+  transition: right .3s var(--ease);
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { right: 0; }
+.nav-avail {
+  display: flex; align-items: center; gap: .45rem;
+  font-size: .7rem; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  opacity: 0;
+}
+.nav-avail::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e;
+}
+@media (max-width:768px) {
+  .nav-links, .nav-avail { display:none; }
+}
+
+/* ─── MAIN SCROLL CONTAINER ───────────────────────────── */
+[data-scroll-container] { background: var(--bg); }
+
+/* ─── SECTION WRAPPER ─────────────────────────────────── */
+.section {
+  padding: clamp(5rem,11vw,10rem) clamp(1.5rem,5vw,4rem);
+}
+.section-alt { background: var(--bg-alt); }
+.section-dark {
+  background: var(--dark);
+  color: var(--bg);
+}
+
+/* SECTION LABEL + TITLE + PROGRESS LINE */
+.s-label {
+  font-size: .68rem; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--rust);
+  margin-bottom: 1rem;
+}
+.s-head-wrap {
+  display: flex; align-items: flex-end; gap: 2rem;
+  margin-bottom: clamp(3rem,6vw,5.5rem);
+  overflow: hidden;
+}
+.s-title {
+  font-family: var(--f-disp);
+  font-size: clamp(3rem,6.5vw,7rem);
+  line-height: .95; letter-spacing: .01em;
+  transform: translateY(110%);
+}
+.progress-line {
+  flex: 1; height: 1px;
+  background: var(--rule);
+  position: relative;
+  margin-bottom: .6rem;
+}
+.progress-line::after {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  height: 1px; width: 0;
+  background: var(--rust);
+  transition: width .1s linear;
+}
+
+/* ─── HERO ────────────────────────────────────────────── */
+#hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 64px clamp(1.5rem,5vw,4rem) 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero-left {
+  padding-top: clamp(2rem,6vw,5rem);
+  padding-bottom: clamp(5rem,9vw,8rem);
+  display: flex; flex-direction: column; gap: 1.75rem;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-size: .72rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+  overflow: hidden;
+}
+.hero-eyebrow span { display: block; transform: translateY(120%); }
+.hero-name {
+  font-family: var(--f-disp);
+  font-size: clamp(5.5rem,13vw,14rem);
+  line-height: .88; letter-spacing: -.01em;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.hero-name .hn-line {
+  overflow: hidden;
+}
+.hero-name .hn-inner {
+  display: block;
+  transform: translateY(110%);
+}
+.hero-name .hn-inner.rust { color: var(--rust); }
+.hero-tagline {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: clamp(.9rem,1.4vw,1.15rem);
+  line-height: 1.7; color: var(--muted);
+  max-width: 44ch;
+  opacity: 0; transform: translateY(20px);
+}
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: .45rem;
+  opacity: 0; transform: translateY(16px);
+}
+.hero-tag {
+  font-size: .68rem; font-weight: 500; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--rule);
+  padding: .35rem .9rem; border-radius: 999px;
+  background: rgba(255,255,255,.45);
+}
+.hero-avail {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .72rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #16a34a;
+  opacity: 0; transform: translateY(14px);
+}
+.hero-avail::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e; flex-shrink: 0;
+}
+.hero-scroll-cue {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(14,12,9,.25);
+  opacity: 0;
+}
+.hero-scroll-cue::before {
+  content: ''; width: 3rem; height: 1px; background: var(--faint); flex-shrink: 0;
+}
+
+/* hero right */
+.hero-right {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  padding-top: clamp(4rem,9vw,8rem);
+  padding-bottom: clamp(2rem,4vw,4rem);
+}
+.hero-img-frame {
+  position: relative;
+  width: clamp(200px,36vw,460px);
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+/* clip-reveal — image starts masked */
+.hero-img-clip {
+  position: absolute; inset: 0;
+  clip-path: inset(100% 0 0 0);
+}
+.hero-img-inner {
+  width: 100%; height: 100%;
+  background: #DDD6CC;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-disp); font-size: 5rem;
+  color: rgba(14,12,9,.18); letter-spacing: .08em;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.hero-img-inner img { width:100%; height:100%; object-fit:cover; }
+.hero-shadow {
+  position: absolute; inset: 0;
+  transform: translate(18px,18px);
+  background: var(--rust); z-index: -1;
+  border-radius: 3px;
+  clip-path: inset(100% 0 0 0);
+}
+.hero-badge {
+  position: absolute; bottom: 1.25rem; right: -1rem;
+  background: var(--ink); color: var(--bg);
+  font-size: .62rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; padding: .6rem 1.1rem; border-radius: 3px;
+  white-space: nowrap; opacity: 0; transform: translateY(12px);
+}
+.hero-orb {
+  position: absolute; right: -10%; bottom: -2%;
+  width: clamp(170px,26vw,340px); height: clamp(170px,26vw,340px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%,
+    var(--rust) 0%, #d4621f 22%, var(--mustard) 50%, var(--green) 100%);
+  opacity: 0; filter: blur(1.5px) saturate(1.1);
+  z-index: 0;
+  animation: orbFloat 9s ease-in-out infinite;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  25%  { transform: translate(6px,-22px) scale(1.02); }
+  50%  { transform: translate(-4px,-8px) scale(.98); }
+  75%  { transform: translate(3px,16px) scale(1.01); }
+}
+
+@media (max-width:768px) {
+  #hero { grid-template-columns:1fr; min-height:auto; padding-bottom:4rem; }
+  .hero-right { display:none; }
+  .hero-name { font-size: clamp(4.5rem,18vw,8rem); }
+}
+
+/* ─── INTRO / ABOUT ───────────────────────────────────── */
+#intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem,7vw,6rem);
+  align-items: start;
+}
+.intro-left { display: flex; flex-direction: column; gap: 2rem; }
+.intro-greeting {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: clamp(1.8rem,4vw,3.5rem);
+  line-height: 1.2; white-space: pre-line;
+  overflow: hidden;
+}
+.intro-greeting .ig-inner { display: block; transform: translateY(110%); }
+.intro-body { display: flex; flex-direction: column; gap: 1.1rem; }
+.intro-body p {
+  font-size: 1rem; line-height: 1.85;
+  color: var(--muted);
+  opacity: 0; transform: translateY(22px);
+}
+.intro-body p strong { color: var(--ink); }
+.intro-sig {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 1.3rem; color: var(--muted);
+  opacity: 0; transform: translateY(16px);
+}
+/* right sticky column */
+.intro-right {
+  position: sticky; top: 5rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+.intro-photo {
+  width: 100%; aspect-ratio: 4/5;
+  background: #DDD6CC; border-radius: 3px; overflow: hidden;
+  position: relative;
+  clip-path: inset(100% 0 0 0);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-disp); font-size: 4rem;
+  color: rgba(14,12,9,.18); letter-spacing: .08em;
+}
+.intro-photo img { width:100%; height:100%; object-fit:cover; }
+.intro-photo-badge {
+  position: absolute; bottom: 1rem; right: 1rem;
+  background: var(--ink); color: var(--bg);
+  font-size: .6rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; padding: .5rem 1rem; border-radius: 3px;
+}
+.intro-stat {
+  border: 1px solid var(--rule); border-radius: 3px;
+  padding: 1.5rem; background: rgba(255,255,255,.5);
+  display: flex; flex-direction: column; gap: .3rem;
+  opacity: 0; transform: translateY(18px);
+}
+.intro-stat-val {
+  font-family: var(--f-disp); font-size: 3rem; line-height: 1;
+  color: var(--rust);
+}
+.intro-stat-lbl {
+  font-size: .72rem; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+}
+@media (max-width:768px) {
+  #intro { grid-template-columns:1fr; }
+  .intro-right { position:static; }
+}
+
+/* ─── STORY ───────────────────────────────────────────── */
+#story .story-list { display: flex; flex-direction: column; }
+.story-item {
+  display: grid;
+  grid-template-columns: 80px 1fr 320px;
+  gap: 3rem;
+  align-items: start;
+  padding: clamp(2.5rem,5vw,4rem) 0;
+  border-top: 1px solid var(--rule);
+}
+.story-item:last-child { border-bottom: 1px solid var(--rule); }
+.story-num {
+  font-family: var(--f-disp);
+  font-size: 3.5rem; line-height: 1;
+  color: var(--faint); padding-top: .2rem;
+  opacity: 0; transform: translateX(-20px);
+}
+.story-content { display: flex; flex-direction: column; gap: .9rem; }
+.story-heading {
+  font-family: var(--f-disp);
+  font-size: clamp(1.5rem,3vw,2.4rem);
+  line-height: 1.05; letter-spacing: .02em;
+  overflow: hidden;
+}
+.story-heading .sh-inner { display: block; transform: translateY(110%); }
+.story-text {
+  font-size: .95rem; line-height: 1.85;
+  color: var(--muted); max-width: 52ch;
+  opacity: 0; transform: translateY(18px);
+}
+/* image with clip-reveal */
+.story-img-wrap {
+  aspect-ratio: 4/3; border-radius: 3px;
+  overflow: hidden; position: relative;
+  clip-path: inset(0 100% 0 0);
+}
+.story-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.1);
+}
+@media (max-width:900px) {
+  .story-item { grid-template-columns:60px 1fr; }
+  .story-img-wrap { display:none; }
+}
+@media (max-width:560px) {
+  .story-item { grid-template-columns:1fr; gap:1rem; }
+  .story-num { font-size:2.2rem; }
+}
+
+/* ─── PROJECTS ────────────────────────────────────────── */
+#projects .proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1.5rem;
+}
+.proj-card {
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 3px; overflow: hidden;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(36px);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.proj-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 20px 56px rgba(14,12,9,.08);
+}
+.proj-accent { height: 3px; flex-shrink: 0; }
+.proj-accent.rust    { background: var(--rust); }
+.proj-accent.green   { background: var(--green); }
+.proj-accent.mustard { background: var(--mustard); }
+.proj-accent.cobalt  { background: var(--cobalt); }
+.proj-accent.magenta { background: var(--magenta); }
+.proj-cover {
+  aspect-ratio: 16/9; background: #EAE4DC;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; clip-path: inset(0 100% 0 0);
+}
+.proj-cover img { width:100%; height:100%; object-fit:cover; }
+.proj-cover-lbl {
+  font-family: var(--f-disp);
+  font-size: clamp(1.5rem,3.5vw,2.8rem);
+  letter-spacing: .04em; color: rgba(14,12,9,.14);
+  padding: 1.5rem; text-align: center; line-height: 1;
+}
+.proj-info {
+  padding: 1.5rem; display: flex; flex-direction: column;
+  gap: .45rem; flex: 1;
+}
+.proj-cat {
+  font-size: .62rem; font-weight: 600; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted);
+}
+.proj-title {
+  font-family: var(--f-disp);
+  font-size: clamp(1.2rem,2.5vw,1.75rem);
+  letter-spacing: .03em; line-height: 1;
+}
+.proj-role {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: .88rem; color: var(--muted);
+}
+.proj-summary {
+  font-size: .85rem; line-height: 1.75;
+  color: var(--muted); flex: 1; margin-top: .4rem;
+}
+.proj-link {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink);
+  margin-top: 1rem;
+  transition: gap .25s var(--ease);
+}
+.proj-link:hover { gap: .9rem; }
+.proj-link::after { content: '→'; }
+@media (max-width:900px) { #projects .proj-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px) { #projects .proj-grid { grid-template-columns:1fr; } }
+
+/* ─── STATS ───────────────────────────────────────────── */
+#stats .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+}
+.stat-item {
+  padding: clamp(2rem,4vw,3rem);
+  border: 1px solid var(--rule);
+  display: flex; flex-direction: column; gap: .5rem;
+  opacity: 0; transform: translateY(24px);
+}
+.stat-item:not(:nth-child(3n+1)) { border-left: none; }
+.stat-item:nth-child(n+4) { border-top: none; }
+.stat-val {
+  font-family: var(--f-disp);
+  font-size: clamp(2rem,5vw,4rem); line-height: 1;
+  color: var(--rust);
+}
+.stat-val.mu { color: var(--mustard); }
+.stat-val.gr { color: var(--green); }
+.stat-lbl {
+  font-size: .82rem; line-height: 1.55;
+  color: var(--muted); max-width: 22ch;
+}
+@media (max-width:768px) {
+  #stats .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .stat-item:not(:nth-child(2n+1)) { border-left:none; }
+  .stat-item:nth-child(n+3) { border-top:none; }
+  .stat-item:nth-child(2n+1) { border-left:1px solid var(--rule); }
+}
+
+/* ─── EXPERIENCE ──────────────────────────────────────── */
+#experience .exp-list { display: flex; flex-direction: column; }
+.exp-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 40px;
+  gap: 2rem; align-items: start;
+  padding: 2rem 0;
+  border-top: 1px solid var(--rule);
+  opacity: 0; transform: translateY(22px);
+  transition: background .2s;
+}
+.exp-row:last-child { border-bottom: 1px solid var(--rule); }
+.exp-row:hover { background: rgba(255,255,255,.4); }
+.exp-period {
+  font-size: .78rem; font-weight: 500; letter-spacing: .06em;
+  color: var(--muted); padding-top: .15rem;
+}
+.exp-body { display: flex; flex-direction: column; gap: .25rem; }
+.exp-company {
+  font-family: var(--f-disp);
+  font-size: clamp(1.1rem,2.2vw,1.55rem);
+  letter-spacing: .03em;
+}
+.exp-role {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: .92rem; color: var(--muted);
+}
+.exp-desc {
+  font-size: .86rem; line-height: 1.75;
+  color: var(--muted); max-width: 50ch; margin-top: .3rem;
+}
+.exp-arr {
+  font-size: 1.1rem; color: var(--faint); padding-top: .1rem;
+  transition: color .2s, transform .2s;
+}
+.exp-row:hover .exp-arr { color: var(--rust); transform: translate(4px,-3px); }
+@media (max-width:640px) {
+  .exp-row { grid-template-columns:1fr; gap:.5rem; }
+  .exp-arr { display:none; }
+}
+
+/* education */
+.edu-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1.25rem; margin-top: 3rem;
+  padding-top: 3rem; border-top: 1px solid var(--rule);
+}
+.edu-card {
+  padding: 1.4rem; border: 1px solid var(--rule); border-radius: 3px;
+  background: rgba(255,255,255,.45);
+  opacity: 0; transform: translateY(16px);
+}
+.edu-inst {
+  font-family: var(--f-disp); font-size: 1rem;
+  letter-spacing: .04em; margin-bottom: .35rem;
+}
+.edu-course { font-size: .78rem; color: var(--muted); font-style: italic; }
+@media (max-width:640px) { .edu-grid { grid-template-columns:1fr; } }
+
+/* ─── SKILLS ──────────────────────────────────────────── */
+#skills .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1.25rem;
+}
+.skill-group {
+  padding: 1.75rem;
+  border: 1px solid var(--rule); border-radius: 3px;
+  background: rgba(255,255,255,.5);
+  display: flex; flex-direction: column; gap: .9rem;
+  opacity: 0; transform: translateY(22px);
+}
+.skill-cat-row { display: flex; align-items: center; gap: .6rem; }
+.sk-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.sk-dot.rust    { background:var(--rust); }
+.sk-dot.green   { background:var(--green); }
+.sk-dot.mustard { background:var(--mustard); }
+.sk-dot.cobalt  { background:var(--cobalt); }
+.sk-dot.magenta { background:var(--magenta); }
+.skill-cat {
+  font-size: .7rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.sk-tag {
+  font-size: .7rem; color: var(--muted);
+  border: 1px solid var(--rule); padding: .28rem .7rem;
+  border-radius: 999px; background: var(--bg);
+}
+@media (max-width:900px) { #skills .skills-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px) { #skills .skills-grid { grid-template-columns:1fr; } }
+
+/* ─── PRINCIPLES (PINNED) ─────────────────────────────── */
+#principles {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.principles-quote {
+  max-width: 68ch;
+  font-family: var(--f-serif); font-style: italic;
+  font-size: clamp(1.15rem,2.4vw,1.75rem);
+  line-height: 1.65; color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: clamp(2.5rem,5vw,4rem);
+  margin-bottom: clamp(2.5rem,5vw,4rem);
+  opacity: 0; transform: translateY(24px);
+}
+.principles-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 0;
+}
+.p-item {
+  padding: clamp(2rem,4vw,3rem);
+  border: 1px solid var(--rule);
+  display: flex; flex-direction: column; gap: .85rem;
+  opacity: 0; transform: translateY(28px);
+  transition: background .25s;
+}
+.p-item:not(:nth-child(2n+1)) { border-left: none; }
+.p-item:nth-child(n+3) { border-top: none; }
+.p-item:hover { background: rgba(255,255,255,.65); }
+.p-num {
+  font-family: var(--f-disp);
+  font-size: 3.5rem; line-height: 1;
+  color: var(--faint);
+}
+.p-title {
+  font-family: var(--f-disp);
+  font-size: clamp(1.2rem,2.5vw,1.85rem);
+  letter-spacing: .03em;
+}
+.p-body {
+  font-size: .9rem; line-height: 1.82;
+  color: var(--muted); max-width: 44ch;
+}
+@media (max-width:640px) {
+  .principles-grid { grid-template-columns:1fr; }
+  .p-item:not(:nth-child(2n+1)) { border-left:1px solid var(--rule); }
+  .p-item:not(:first-child) { border-top:none; }
+}
+
+/* ─── CONTACT ─────────────────────────────────────────── */
+#contact .s-label { color: rgba(248,244,238,.4); }
+#contact .s-head-wrap .s-title { color: var(--bg); }
+#contact .progress-line { background: rgba(255,255,255,.1); }
+#contact .progress-line::after { background: var(--rust); }
+.contact-q {
+  font-family: var(--f-disp);
+  font-size: clamp(3rem,8vw,8rem);
+  line-height: .92; letter-spacing: .01em;
+  color: var(--bg);
+  margin-bottom: clamp(1.5rem,3vw,2.5rem);
+  overflow: hidden;
+}
+.contact-q em {
+  color: var(--rust); font-style: italic;
+  font-family: var(--f-serif);
+}
+.contact-q .cq-line { overflow: hidden; }
+.contact-q .cq-inner { display: block; transform: translateY(110%); }
+.contact-intro {
+  font-size: 1rem; line-height: 1.75;
+  color: rgba(248,244,238,.5);
+  max-width: 50ch;
+  margin-bottom: clamp(3rem,6vw,5rem);
+  opacity: 0; transform: translateY(18px);
+}
+.contact-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem,6vw,5rem); align-items: start;
+}
+.contact-details { display: flex; flex-direction: column; gap: 1.25rem; }
+.cd-item { display: flex; align-items: flex-start; gap: 1rem; opacity: 0; transform: translateX(-18px); }
+.cd-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; font-size: .85rem;
+}
+.cd-val { font-size: .95rem; line-height: 1.5; color: rgba(248,244,238,.75); }
+.cd-val a { text-decoration: underline; text-underline-offset: 3px; }
+/* form */
+.contact-form { display: flex; flex-direction: column; gap: .9rem; opacity: 0; transform: translateY(24px); }
+.form-row { display: grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.f-group { display: flex; flex-direction: column; gap: .38rem; }
+.f-group.full { grid-column:1/-1; }
+.f-group label {
+  font-size: .65rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(248,244,238,.38);
+}
+.f-group input, .f-group select, .f-group textarea {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 3px; color: var(--bg);
+  font-family: var(--f-body); font-size: .95rem;
+  padding: .85rem 1rem; width: 100%; outline: none;
+  transition: border-color .25s;
+}
+.f-group input::placeholder, .f-group textarea::placeholder { color: rgba(248,244,238,.22); }
+.f-group input:focus, .f-group select:focus, .f-group textarea:focus { border-color: var(--rust); }
+.f-group select { appearance:none; cursor:pointer; }
+.f-group select option { background: #1a1714; }
+.f-group textarea { resize: vertical; min-height: 130px; }
+.form-btn {
+  background: var(--rust); color: #fff;
+  font-family: var(--f-body); font-size: .8rem; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase;
+  padding: 1rem 2.2rem; border-radius: 3px; border: none;
+  cursor: pointer; align-self: flex-start;
+  transition: background .2s, transform .15s;
+}
+.form-btn:hover { background: #b8432a; transform: translateY(-2px); }
+.form-ok {
+  font-size: .88rem; color: #4ade80;
+  display: none; margin-top: .5rem;
+}
+.form-ok.show { display: block; }
+@media (max-width:768px) {
+  .contact-layout { grid-template-columns:1fr; }
+  .form-row { grid-template-columns:1fr; }
+}
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 2.5rem clamp(1.5rem,5vw,4rem);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1.25rem;
+}
+.ft-logo {
+  font-family: var(--f-disp); font-size: 1.05rem;
+  letter-spacing: .14em; color: var(--bg);
+}
+.ft-sub {
+  font-size: .7rem; color: rgba(248,244,238,.32); margin-top: .2rem;
+}
+.ft-links {
+  display: flex; gap: 2rem; list-style: none; flex-wrap: wrap;
+}
+.ft-links a {
+  font-size: .7rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(248,244,238,.38);
+  transition: color .2s;
+}
+.ft-links a:hover { color: var(--bg); }
+.ft-copy {
+  width: 100%; text-align: right;
+  font-size: .7rem; color: rgba(248,244,238,.22);
+}
+
+  </style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-name" id="ld-name">
+    <span class="ld-char">A</span><span class="ld-char">N</span><span class="ld-char">D</span><span class="ld-char">R</span><span class="ld-char">E</span><span class="ld-char">W</span>
+    <span class="ld-char" style="margin-left:.2em">M</span><span class="ld-char">U</span><span class="ld-char">T</span><span class="ld-char">I</span>
+  </div>
+  <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+  <div class="ld-count" id="ld-count">0%</div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a href="#" class="nav-logo">ANDREW MUTI</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-avail">Available</div>
+</nav>
+
+<!-- ═══════════════ SCROLL CONTAINER ═══════════════════ -->
+<div data-scroll-container id="scroll-container">
+
+<!-- HERO -->
+<section id="hero" data-scroll-section>
+  <div class="hero-left">
+    <p class="hero-eyebrow"><span>Creative Director · Nairobi, Kenya</span></p>
+    <div class="hero-name">
+      <div class="hn-line"><span class="hn-inner">ANDREW</span></div>
+      <div class="hn-line"><span class="hn-inner rust">MUTI</span></div>
+    </div>
+    <p class="hero-tagline">Founder of Dreeydesigns. Strategist. Art Director. The creative behind some of East Africa's most recognized brand campaigns — and building the next generation of African storytelling from Nairobi.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Brand Strategy</span>
+      <span class="hero-tag">Art Direction</span>
+      <span class="hero-tag">AI-Integrated Workflow</span>
+      <span class="hero-tag">Nairobi · Remote</span>
+    </div>
+    <p class="hero-avail">Available for new projects</p>
+    <p class="hero-scroll-cue">Scroll to explore</p>
+  </div>
+
+  <div class="hero-right" data-scroll data-scroll-speed="-1">
+    <div class="hero-img-frame">
+      <div class="hero-img-clip">
+        <div class="hero-img-inner" id="hero-img-el">AM</div>
+      </div>
+      <div class="hero-shadow"></div>
+      <div class="hero-badge">Dreeydesigns · Est. 2019</div>
+    </div>
+    <div class="hero-orb"></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="section" id="intro" data-scroll-section>
+  <div class="intro-left">
+    <p class="s-label">About</p>
+    <h2 class="intro-greeting">
+      <span class="ig-inner">Hi. I'm Andrew.</span>
+      <span class="ig-inner">Also Andy, or Dreey.</span>
+    </h2>
+    <div class="intro-body">
+      <p>I'm a Creative Director and brand strategist based in Nairobi, Kenya. I founded <strong>Dreeydesigns</strong> in 2019 — not as a freelance side hustle, but as a proper studio with a methodology, a positioning, and a belief that world-class creative work could be built and delivered from right here in Nairobi.</p>
+      <p>For the past seven years, I've directed campaigns for <strong>Range Rover</strong>, <strong>Land Cruiser Lexus</strong>, and <strong>Jack Daniel's</strong>. I've built brand systems for hospitals, safari companies, churches, retail brands, and tech startups. And I've done it all using tools most agencies in this region haven't even heard of yet.</p>
+      <p>That gap between what I know and what most are doing? That's the moat. That's <strong>Dreeydesigns</strong>.</p>
+    </div>
+    <p class="intro-sig">— Andrew</p>
+  </div>
+  <div class="intro-right">
+    <div class="intro-photo" id="intro-photo-el">
+      AM
+      <div class="intro-photo-badge">Creative Director</div>
+    </div>
+    <div class="intro-stat">
+      <span class="intro-stat-val">7+</span>
+      <span class="intro-stat-lbl">Years in the industry</span>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section section-alt" id="story" data-scroll-section>
+  <p class="s-label">How I got here</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">The Story So Far</h2>
+    <div class="progress-line" id="pl-story"></div>
+  </div>
+  <div class="story-list">
+
+    <div class="story-item">
+      <div class="story-num">01</div>
+      <div class="story-content">
+        <h3 class="story-heading"><span class="sh-inner">It Started With a Sketchbook</span></h3>
+        <p class="story-text">Long before brand strategy or client briefs, there was a kid in Nairobi filling notebooks with type experiments, logo sketches, and visual ideas that had nowhere to go yet. I didn't know it then, but I was already doing the work. Art was the language I reached for before I understood it as a career.</p>
+      </div>
+      <div class="story-img-wrap">
+        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=700&q=80" alt="Sketchbook" loading="lazy">
+      </div>
+    </div>
+
+    <div class="story-item">
+      <div class="story-num">02</div>
+      <div class="story-content">
+        <h3 class="story-heading"><span class="sh-inner">Trained. Then Self-Taught.</span></h3>
+        <p class="story-text">Nairobits Trust. Nairobi Technical Training Institute. Shang Tao Media Art College. I took the foundations seriously. But the real education happened after hours — studying international agencies, reverse-engineering great campaigns, teaching myself what institutions don't have the courage to teach. The industry moves faster than any curriculum. I learned to move with it.</p>
+      </div>
+      <div class="story-img-wrap">
+        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=700&q=80" alt="Study" loading="lazy">
+      </div>
+    </div>
+
+    <div class="story-item">
+      <div class="story-num">03</div>
+      <div class="story-content">
+        <h3 class="story-heading"><span class="sh-inner">Dreeydesigns Was Never a Side Project</span></h3>
+        <p class="story-text">In 2019, I launched Dreeydesigns with a clear model: one studio, high-value clients, no compromises on quality. I chose premium positioning deliberately. Within two years, the studio had seven active brand verticals and clients across Kenya, the UK, and the US.</p>
+      </div>
+      <div class="story-img-wrap">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" alt="Studio" loading="lazy">
+      </div>
+    </div>
+
+    <div class="story-item">
+      <div class="story-num">04</div>
+      <div class="story-content">
+        <h3 class="story-heading"><span class="sh-inner">When AI Arrived, I Leaned In</span></h3>
+        <p class="story-text">When AI tools hit the creative industry, most agencies panicked. I saw an opportunity. I built automation pipelines with N8N, integrated Claude and ChatGPT into my workflow, and started delivering in days what used to take weeks — at higher quality. At Dreeydesigns, AI isn't a replacement for craft. It's the amplifier of it.</p>
+      </div>
+      <div class="story-img-wrap">
+        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&q=80" alt="AI" loading="lazy">
+      </div>
+    </div>
+
+    <div class="story-item">
+      <div class="story-num">05</div>
+      <div class="story-content">
+        <h3 class="story-heading"><span class="sh-inner">Nairobi. But Never Small.</span></h3>
+        <p class="story-text">I'm proud to build from Nairobi. The city has shaped my eye, my instincts, and my hunger. But I've always designed for a global audience. The brands I build command attention on screens in cities I've never visited. And right now I'm building HADITHI — an African children's animation brand that will bring our continent's stories to the world.</p>
+      </div>
+      <div class="story-img-wrap">
+        <img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=700&q=80" alt="Nairobi" loading="lazy">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" data-scroll-section>
+  <p class="s-label">Selected Work</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">Projects</h2>
+    <div class="progress-line" id="pl-projects"></div>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-card">
+      <div class="proj-accent rust"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">DREEY&shy;DESIGNS</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Brand Identity · Studio</p>
+        <h3 class="proj-title">DREEYDESIGNS</h3>
+        <p class="proj-role">Founder &amp; Creative Director</p>
+        <p class="proj-summary">Brand system for a Nairobi-based AI-forward creative studio. Full identity: logo, type system, tone of voice, content strategy, and a 6-platform publishing pipeline.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-accent green"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">RANGE ROVER</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Campaign · Automotive</p>
+        <h3 class="proj-title">RANGE ROVER CENTRE</h3>
+        <p class="proj-role">Art Director · 2024–Present</p>
+        <p class="proj-summary">Art direction for Kenya's premier Range Rover dealership. Visual campaigns, social media direction, and brand consistency across digital and physical touchpoints.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-accent mustard"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">HADITHI</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Brand Identity · Children's Media</p>
+        <h3 class="proj-title">HADITHI</h3>
+        <p class="proj-role">Founder &amp; Creative Director</p>
+        <p class="proj-summary">An original African children's animation and educational content brand. A geographic and historical journey through African civilisations, starting in Turkana, Kenya.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-accent cobalt"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">SALATON SAFARIS</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Social Media · Tourism</p>
+        <h3 class="proj-title">SALATON SAFARIS</h3>
+        <p class="proj-role">Social Media Director</p>
+        <p class="proj-summary">Full social media management, boosted ad campaigns, and monthly performance reporting for a premium East African safari operator. Measurable engagement growth across platforms.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-accent magenta"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">TULOPOTS</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Brand Identity · E-Commerce</p>
+        <h3 class="proj-title">TULOPOTS</h3>
+        <p class="proj-role">Founder &amp; Creative Director</p>
+        <p class="proj-summary">Premium Nairobi terracotta brand. Full brand bible, e-commerce website (Next.js, M-Pesa / Stripe integration), and social strategy built from the ground up.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-accent rust"></div>
+      <div class="proj-cover"><div class="proj-cover-lbl">LAND CRUISER</div></div>
+      <div class="proj-info">
+        <p class="proj-cat">Campaign · Automotive</p>
+        <h3 class="proj-title">LAND CRUISER LEXUS</h3>
+        <p class="proj-role">Art Director · 2025–Present</p>
+        <p class="proj-summary">Art direction and campaign design for one of Nairobi's top luxury automotive centres. Consistent brand presence across digital channels and printed materials.</p>
+        <a class="proj-link" href="#">View Project</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section section-alt" id="stats" data-scroll-section>
+  <p class="s-label">By the numbers</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">Results</h2>
+    <div class="progress-line" id="pl-stats"></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-val">+13,700%</div><div class="stat-lbl">Engagement growth delivered for a single client</div></div>
+    <div class="stat-item"><div class="stat-val mu">1,050+</div><div class="stat-lbl">Creative assets produced</div></div>
+    <div class="stat-item"><div class="stat-val gr">8,000+</div><div class="stat-lbl">Community members managed</div></div>
+    <div class="stat-item"><div class="stat-val">7</div><div class="stat-lbl">Active brand verticals</div></div>
+    <div class="stat-item"><div class="stat-val mu">6+</div><div class="stat-lbl">Years running Dreeydesigns</div></div>
+    <div class="stat-item"><div class="stat-val gr">3</div><div class="stat-lbl">Continents served</div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience" data-scroll-section>
+  <p class="s-label">Career</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">Experience</h2>
+    <div class="progress-line" id="pl-exp"></div>
+  </div>
+  <div class="exp-list">
+    <div class="exp-row"><span class="exp-period">2024 – Present</span><div class="exp-body"><h3 class="exp-company">Range Rover Centre Nairobi</h3><p class="exp-role">Art Director</p><p class="exp-desc">Visual campaigns, social media direction, and brand consistency for Kenya's premier Range Rover dealership.</p></div><span class="exp-arr">↗</span></div>
+    <div class="exp-row"><span class="exp-period">2025 – Present</span><div class="exp-body"><h3 class="exp-company">Land Cruiser Lexus Centre</h3><p class="exp-role">Art Director</p><p class="exp-desc">Art direction and campaign design for a flagship luxury automotive brand in Nairobi.</p></div><span class="exp-arr">↗</span></div>
+    <div class="exp-row"><span class="exp-period">2024 – 2025</span><div class="exp-body"><h3 class="exp-company">Meekay Lee Group</h3><p class="exp-role">Brand Consultant</p><p class="exp-desc">Brand strategy and campaign execution across multiple verticals including Salaton Safaris Arusha.</p></div><span class="exp-arr">↗</span></div>
+    <div class="exp-row"><span class="exp-period">2023 – 2024</span><div class="exp-body"><h3 class="exp-company">Hubthrill</h3><p class="exp-role">Senior Designer</p><p class="exp-desc">Led design across digital products, social media, and marketing collateral for a Nairobi-based agency.</p></div><span class="exp-arr">↗</span></div>
+    <div class="exp-row"><span class="exp-period">2019 – Present</span><div class="exp-body"><h3 class="exp-company">Dreeydesigns</h3><p class="exp-role">Founder &amp; Creative Director</p><p class="exp-desc">Built and run a full-service AI-forward brand studio serving clients across Kenya, the UK, and the US.</p></div><span class="exp-arr">↗</span></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card"><p class="edu-inst">Shang Tao Media Art College</p><p class="edu-course">Graphic Design &amp; Media Arts</p></div>
+    <div class="edu-card"><p class="edu-inst">Nairobi Technical Training Institute</p><p class="edu-course">Design Technology</p></div>
+    <div class="edu-card"><p class="edu-inst">Nairobits Trust</p><p class="edu-course">Digital Design Foundations</p></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section section-alt" id="skills" data-scroll-section>
+  <p class="s-label">Toolkit</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">Skills</h2>
+    <div class="progress-line" id="pl-skills"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot rust"></span><span class="skill-cat">Brand Strategy</span></div><div class="skill-tags"><span class="sk-tag">Brand Positioning</span><span class="sk-tag">Visual Identity</span><span class="sk-tag">Brand Bible Development</span><span class="sk-tag">Tone of Voice</span><span class="sk-tag">Naming</span></div></div>
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot green"></span><span class="skill-cat">Art Direction</span></div><div class="skill-tags"><span class="sk-tag">Campaign Direction</span><span class="sk-tag">Photography Direction</span><span class="sk-tag">Layout</span><span class="sk-tag">Editorial Design</span><span class="sk-tag">Typography</span></div></div>
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot mustard"></span><span class="skill-cat">Digital Design</span></div><div class="skill-tags"><span class="sk-tag">Social Media Design</span><span class="sk-tag">Web Design</span><span class="sk-tag">UI/UX</span><span class="sk-tag">Motion Graphics</span><span class="sk-tag">Figma</span><span class="sk-tag">Adobe XD</span></div></div>
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot cobalt"></span><span class="skill-cat">Production</span></div><div class="skill-tags"><span class="sk-tag">Photoshop</span><span class="sk-tag">Illustrator</span><span class="sk-tag">InDesign</span><span class="sk-tag">Canva</span><span class="sk-tag">Premiere Pro</span></div></div>
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot magenta"></span><span class="skill-cat">AI &amp; Automation</span></div><div class="skill-tags"><span class="sk-tag">N8N</span><span class="sk-tag">OpenAI API</span><span class="sk-tag">Claude</span><span class="sk-tag">ChatGPT</span><span class="sk-tag">Gemini</span><span class="sk-tag">GitHub Copilot</span><span class="sk-tag">Blotato</span><span class="sk-tag">Apify</span></div></div>
+    <div class="skill-group"><div class="skill-cat-row"><span class="sk-dot rust"></span><span class="skill-cat">Business</span></div><div class="skill-tags"><span class="sk-tag">Client Management</span><span class="sk-tag">SMMA Model</span><span class="sk-tag">Content Strategy</span><span class="sk-tag">Performance Reporting</span></div></div>
+  </div>
+</section>
+
+<!-- PRINCIPLES (PINNED) -->
+<section class="section" id="principles" data-scroll-section>
+  <p class="s-label">What I Believe</p>
+  <div class="s-head-wrap">
+    <h2 class="s-title">Principles</h2>
+    <div class="progress-line" id="pl-principles"></div>
+  </div>
+  <p class="principles-quote">"For me, design is about commanding attention, communicating with precision, and building something that lasts beyond the brief."</p>
+  <div class="principles-grid">
+    <div class="p-item"><div class="p-num">01</div><h3 class="p-title">AI Is Your Leverage</h3><p class="p-body">The creative industry is being reshaped. Most agencies are watching. At Dreeydesigns, we use AI as a competitive moat — delivering brand systems faster, smarter, and at higher quality than legacy studios. This isn't a threat to craft. It is the amplifier of it.</p></div>
+    <div class="p-item"><div class="p-num">02</div><h3 class="p-title">Brand Systems, Not Logos</h3><p class="p-body">A logo is a signature. A brand system is a language. I build the full vocabulary — visual, verbal, and behavioural — so your brand speaks the same way in every room it enters, long after the project is closed.</p></div>
+    <div class="p-item"><div class="p-num">03</div><h3 class="p-title">Story Before Style</h3><p class="p-body">Every visual decision is earned by a narrative reason. I start with the story — who you are, what you stand for, who you're talking to — before choosing a font or a colour. Style without story is decoration. Story without style is invisible. Both together? Unbeatable.</p></div>
+    <div class="p-item"><div class="p-num">04</div><h3 class="p-title">Nairobi First. World-Class Always.</h3><p class="p-body">I am proud to build from Nairobi. Our visual culture, our ambition, our creative instinct is a feature — not a footnote. The world's best creative work will increasingly come from this continent. I am here to make sure it does.</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section-dark" id="contact" data-scroll-section>
+  <p class="s-label">Let's Talk</p>
+  <div class="contact-q">
+    <div class="cq-line"><span class="cq-inner">Got a</span></div>
+    <div class="cq-line"><span class="cq-inner"><em>project?</em></span></div>
+  </div>
+  <p class="contact-intro">Have a project in mind? I'm currently taking select clients for brand strategy, visual identity, art direction, and campaign work. Based in Nairobi — working globally.</p>
+  <div class="contact-layout">
+    <div class="contact-details">
+      <div class="cd-item"><div class="cd-icon">✉</div><div class="cd-val"><a href="mailto:Dreeydesigns@gmail.com">Dreeydesigns@gmail.com</a></div></div>
+      <div class="cd-item"><div class="cd-icon">☏</div><div class="cd-val">+254 743 817 931</div></div>
+      <div class="cd-item"><div class="cd-icon">⊕</div><div class="cd-val"><a href="https://www.dreeydesigns.com" target="_blank" rel="noopener">www.dreeydesigns.com</a></div></div>
+      <div class="cd-item"><div class="cd-icon">◎</div><div class="cd-val">Nairobi, Kenya · Remote-ready</div></div>
+    </div>
+    <form class="contact-form" id="contact-form">
+      <div class="form-row">
+        <div class="f-group"><label for="cf-name">Your Name</label><input type="text" id="cf-name" name="name" placeholder="Jane Wanjiru" required></div>
+        <div class="f-group"><label for="cf-email">Email</label><input type="email" id="cf-email" name="email" placeholder="jane@company.com" required></div>
+      </div>
+      <div class="f-group full"><label for="cf-service">What Do You Need?</label>
+        <select id="cf-service" name="service">
+          <option value="">Select a service</option>
+          <option>Brand Identity</option>
+          <option>Art Direction</option>
+          <option>Social Media Campaigns</option>
+          <option>Web Design</option>
+          <option>AI-Integrated Workflow</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="f-group full"><label for="cf-msg">Tell Me About It</label><textarea id="cf-msg" name="message" placeholder="What are you building?"></textarea></div>
+      <button type="submit" class="form-btn">Send Message →</button>
+      <p class="form-ok" id="form-ok">Thank you — I'll be in touch soon.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer data-scroll-section>
+  <div>
+    <div class="ft-logo">ANDREW MUTI</div>
+    <div class="ft-sub">Creative Director · Dreeydesigns · Nairobi</div>
+  </div>
+  <ul class="ft-links">
+    <li><a href="#" id="ft-linkedin" target="_blank" rel="noopener">LinkedIn</a></li>
+    <li><a href="#" id="ft-behance"  target="_blank" rel="noopener">Behance</a></li>
+    <li><a href="#" id="ft-instagram"target="_blank" rel="noopener">Instagram</a></li>
+    <li><a href="mailto:Dreeydesigns@gmail.com">Email</a></li>
+  </ul>
+  <p class="ft-copy">© 2026 Andrew Muti. All rights reserved.</p>
+</footer>
+
+</div><!-- /data-scroll-container -->
+
+<!-- ═══════════════ SCRIPTS ════════════════════════════ -->
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- Locomotive Scroll -->
+<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+<script>
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+(function() {
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+
+  let mx = 0, my = 0, rx = 0, ry = 0, raf;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function tick() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    raf = requestAnimationFrame(tick);
+  }
+  tick();
+
+  document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
+  });
+  document.querySelectorAll('#contact, footer').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cur-dark'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cur-dark'));
+  });
+})();
+
+/* ══════════════════════════════════════════
+   LOADER  →  on complete, kick off hero
+══════════════════════════════════════════ */
+(function() {
+  const loader  = document.getElementById('loader');
+  const chars   = document.querySelectorAll('.ld-char');
+  const bar     = document.getElementById('ld-bar');
+  const counter = document.getElementById('ld-count');
+
+  // Animate characters in stagger
+  gsap.to(chars, {
+    y: 0, duration: .7, stagger: .04,
+    ease: 'power3.out', delay: .15
+  });
+
+  // Progress bar + counter
+  const prog = { v: 0 };
+  gsap.to(prog, {
+    v: 100, duration: 1.9, ease: 'power2.inOut',
+    delay: .2,
+    onUpdate() {
+      const p = Math.round(prog.v);
+      bar.style.width = p + '%';
+      counter.textContent = p + '%';
+    },
+    onComplete() {
+      // Slide loader out
+      gsap.to(chars, { y: -120, duration: .5, stagger: .03, ease: 'power2.in' });
+      gsap.to(loader, {
+        yPercent: -100, duration: .8, delay: .35, ease: 'power3.inOut',
+        onComplete() {
+          loader.style.display = 'none';
+          kickHero();
+        }
+      });
+    }
+  });
+})();
+
+/* ══════════════════════════════════════════
+   HERO ENTRANCE ANIMATIONS
+══════════════════════════════════════════ */
+function kickHero() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  // Nav
+  tl.to('.nav-logo, .nav-links, .nav-avail', { opacity: 1, duration: .6 }, 0);
+
+  // Eyebrow
+  tl.to('.hero-eyebrow span', { y: 0, duration: .65 }, .1);
+
+  // Name lines — stagger
+  tl.to('.hn-inner', { y: 0, duration: .9, stagger: .12 }, .2);
+
+  // Tagline
+  tl.to('.hero-tagline', { opacity: 1, y: 0, duration: .7 }, .55);
+
+  // Tags
+  tl.to('.hero-tags', { opacity: 1, y: 0, duration: .6 }, .7);
+
+  // Availability + scroll cue
+  tl.to('.hero-avail', { opacity: 1, y: 0, duration: .5 }, .85);
+  tl.to('.hero-scroll-cue', { opacity: 1, duration: .5 }, 1);
+
+  // Hero image clip reveal
+  tl.to('.hero-img-clip', { clipPath: 'inset(0% 0 0 0)', duration: 1.1, ease: 'power4.inOut' }, .45);
+  tl.to('.hero-shadow',   { clipPath: 'inset(0% 0 0 0)', duration: 1.1, ease: 'power4.inOut' }, .55);
+  tl.to('.hero-badge',    { opacity: 1, y: 0, duration: .5 }, 1);
+
+  // Orb
+  tl.to('.hero-orb', { opacity: .82, duration: 1.2 }, .8);
+
+  // After hero appears, init Loco + ScrollTrigger
+  tl.call(initScroll, [], 0.6);
+}
+
+/* ══════════════════════════════════════════
+   LOCOMOTIVE SCROLL + SCROLLTRIGGER BRIDGE
+══════════════════════════════════════════ */
+let locoScroll;
+function initScroll() {
+  locoScroll = new LocomotiveScroll({
+    el: document.querySelector('[data-scroll-container]'),
+    smooth: true,
+    multiplier: .9,
+    lerp: .08
+  });
+
+  // Tell ScrollTrigger to use Locomotive's scroll position
+  locoScroll.on('scroll', ScrollTrigger.update);
+
+  ScrollTrigger.scrollerProxy('[data-scroll-container]', {
+    scrollTop(value) {
+      return arguments.length
+        ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
+        : locoScroll.scroll.instance.scroll.y;
+    },
+    getBoundingClientRect() {
+      return { top:0, left:0, width:window.innerWidth, height:window.innerHeight };
+    },
+    pinType: document.querySelector('[data-scroll-container]').style.transform ? 'transform' : 'fixed'
+  });
+
+  ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+  gsap.registerPlugin(ScrollTrigger);
+
+  // NAV
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  locoScroll.on('scroll', ({ scroll }) => {
+    const y = scroll.y;
+    nav.classList.toggle('scrolled', y > 60);
+    nav.classList.toggle('hidden', y > lastY + 2 && y > 200);
+    if (y < lastY - 2) nav.classList.remove('hidden');
+    lastY = y;
+  });
+
+  setupAnimations();
+
+  ScrollTrigger.refresh();
+}
+
+/* ══════════════════════════════════════════
+   ALL SCROLL-TRIGGERED ANIMATIONS
+══════════════════════════════════════════ */
+function setupAnimations() {
+  const scroller = '[data-scroll-container]';
+  const defaults = { scroller, toggleActions: 'play none none none' };
+
+  // ── Helper: progress line for a section ──
+  function progressLine(lineEl, triggerEl, sectionEl) {
+    if (!lineEl || !sectionEl) return;
+    ScrollTrigger.create({
+      ...defaults,
+      trigger: sectionEl,
+      start: 'top 80%',
+      end:   'bottom 20%',
+      onUpdate(self) {
+        lineEl.style.setProperty('--p', (self.progress * 100).toFixed(1) + '%');
+        lineEl.querySelector(':after') || (lineEl.style.cssText += '');
+        // direct manipulation
+        const after = lineEl.querySelector('[data-prog]');
+        if (!after) {
+          // use pseudo – inject via gsap quickSetter
+        }
+        gsap.to(lineEl, { '--w': self.progress * 100 + '%', duration: 0 });
+      }
+    });
+    // simpler: animate a child span
+    const span = document.createElement('span');
+    span.style.cssText = 'display:block;height:1px;width:0;background:var(--rust);transition:none;';
+    lineEl.appendChild(span);
+    ScrollTrigger.create({
+      ...defaults,
+      trigger: sectionEl,
+      start: 'top 75%',
+      end:   'bottom 25%',
+      onUpdate(self) { span.style.width = (self.progress * 100) + '%'; }
+    });
+  }
+
+  // ── Section title slides up ──
+  document.querySelectorAll('.s-title').forEach(el => {
+    gsap.to(el, {
+      y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { ...defaults, trigger: el, start: 'top 88%' }
+    });
+  });
+
+  // ── Progress lines ──
+  progressLine(document.getElementById('pl-story'),      null, document.getElementById('story'));
+  progressLine(document.getElementById('pl-projects'),   null, document.getElementById('projects'));
+  progressLine(document.getElementById('pl-stats'),      null, document.getElementById('stats'));
+  progressLine(document.getElementById('pl-exp'),        null, document.getElementById('experience'));
+  progressLine(document.getElementById('pl-skills'),     null, document.getElementById('skills'));
+  progressLine(document.getElementById('pl-principles'), null, document.getElementById('principles'));
+
+  // ── INTRO section ──
+  gsap.to('.intro-photo', {
+    clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.inOut',
+    scrollTrigger: { ...defaults, trigger: '#intro', start: 'top 70%' }
+  });
+  gsap.to('.intro-greeting .ig-inner', {
+    y: 0, duration: .9, stagger: .1, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#intro', start: 'top 75%' }
+  });
+  gsap.to('.intro-body p', {
+    opacity: 1, y: 0, duration: .75, stagger: .12, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.intro-body', start: 'top 80%' }
+  });
+  gsap.to('.intro-sig', {
+    opacity: 1, y: 0, duration: .6, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.intro-sig', start: 'top 88%' }
+  });
+  gsap.to('.intro-stat', {
+    opacity: 1, y: 0, duration: .7, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.intro-stat', start: 'top 88%' }
+  });
+
+  // ── STORY items ──
+  document.querySelectorAll('.story-item').forEach((item, i) => {
+    const num  = item.querySelector('.story-num');
+    const head = item.querySelector('.sh-inner');
+    const text = item.querySelector('.story-text');
+    const img  = item.querySelector('.story-img-wrap');
+    const imgInner = img ? img.querySelector('img') : null;
+    const st = { ...defaults, trigger: item, start: 'top 82%' };
+
+    if (num)  gsap.to(num,  { opacity: 1, x: 0, duration: .6, ease: 'power3.out', scrollTrigger: st });
+    if (head) gsap.to(head, { y: 0, duration: .9, ease: 'power3.out', scrollTrigger: { ...st, start: 'top 84%' } });
+    if (text) gsap.to(text, { opacity: 1, y: 0, duration: .7, delay: .1, ease: 'power3.out', scrollTrigger: st });
+
+    // Clip reveal image
+    if (img) {
+      gsap.to(img, {
+        clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power4.inOut',
+        scrollTrigger: { ...st, start: 'top 80%' }
+      });
+      if (imgInner) {
+        gsap.to(imgInner, {
+          scale: 1, duration: 1.2, ease: 'power3.out',
+          scrollTrigger: { ...st, start: 'top 80%' }
+        });
+      }
+    }
+  });
+
+  // ── PROJECTS — staggered card reveal ──
+  gsap.to('.proj-card', {
+    opacity: 1, y: 0, duration: .75, stagger: .1, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#projects .proj-grid', start: 'top 80%' }
+  });
+  // Clip reveal for project covers
+  document.querySelectorAll('.proj-cover').forEach(cover => {
+    gsap.to(cover, {
+      clipPath: 'inset(0 0% 0 0)', duration: .9, ease: 'power4.inOut',
+      scrollTrigger: { ...defaults, trigger: cover, start: 'top 85%' }
+    });
+  });
+
+  // ── STATS ──
+  gsap.to('.stat-item', {
+    opacity: 1, y: 0, duration: .65, stagger: .08, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#stats .stats-grid', start: 'top 80%' }
+  });
+
+  // ── EXPERIENCE ──
+  gsap.to('.exp-row', {
+    opacity: 1, y: 0, duration: .65, stagger: .1, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#experience .exp-list', start: 'top 80%' }
+  });
+  gsap.to('.edu-card', {
+    opacity: 1, y: 0, duration: .6, stagger: .1, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.edu-grid', start: 'top 85%' }
+  });
+
+  // ── SKILLS ──
+  gsap.to('.skill-group', {
+    opacity: 1, y: 0, duration: .65, stagger: .08, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#skills .skills-grid', start: 'top 80%' }
+  });
+
+  // ── PRINCIPLES ──
+  gsap.to('.principles-quote', {
+    opacity: 1, y: 0, duration: .9, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.principles-quote', start: 'top 80%' }
+  });
+  gsap.to('.p-item', {
+    opacity: 1, y: 0, duration: .7, stagger: .12, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.principles-grid', start: 'top 80%' }
+  });
+
+  // ── CONTACT ──
+  gsap.to('.contact-q .cq-inner', {
+    y: 0, duration: 1, stagger: .15, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '#contact', start: 'top 75%' }
+  });
+  gsap.to('.contact-intro', {
+    opacity: 1, y: 0, duration: .8, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.contact-intro', start: 'top 85%' }
+  });
+  gsap.to('.cd-item', {
+    opacity: 1, x: 0, duration: .65, stagger: .1, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.contact-details', start: 'top 82%' }
+  });
+  gsap.to('.contact-form', {
+    opacity: 1, y: 0, duration: .8, ease: 'power3.out',
+    scrollTrigger: { ...defaults, trigger: '.contact-form', start: 'top 82%' }
+  });
+
+  // ── Hero parallax on scroll ──
+  gsap.to('.hero-right', {
+    yPercent: 20,
+    scrollTrigger: {
+      trigger: '#hero',
+      scroller,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true
+    }
+  });
+}
+
+/* ══════════════════════════════════════════
+   CONTACT FORM
+══════════════════════════════════════════ */
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.form-btn');
+  const ok  = document.getElementById('form-ok');
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(this)))
+    });
+    if (res.ok) { ok.classList.add('show'); this.reset(); }
+  } catch (_) {
+    ok.textContent = 'Message received — I\'ll be in touch soon.';
+    ok.classList.add('show'); this.reset();
+  }
+  btn.textContent = 'Send Message →'; btn.disabled = false;
+});
+
+/* ══════════════════════════════════════════
+   CONTENT.JSON HYDRATION
+══════════════════════════════════════════ */
+fetch('/content.json').then(r => r.json()).then(d => {
+  if (d.hero?.heroImage) {
+    const el = document.getElementById('hero-img-el');
+    if (el) el.innerHTML = `<img src="${d.hero.heroImage}" alt="Andrew Muti">`;
+  }
+  if (d.intro?.photo) {
+    const el = document.getElementById('intro-photo-el');
+    if (el) {
+      const badge = el.querySelector('.intro-photo-badge');
+      el.innerHTML = `<img src="${d.intro.photo}" alt="Andrew Muti">`;
+      if (badge) el.appendChild(badge);
+    }
+  }
+  const s = d.social || {};
+  if (s.linkedin && s.linkedin !== '#') document.getElementById('ft-linkedin').href = s.linkedin;
+  if (s.behance  && s.behance  !== '#') document.getElementById('ft-behance').href  = s.behance;
+  if (s.instagram&& s.instagram!== '#') document.getElementById('ft-instagram').href= s.instagram;
+}).catch(() => {});
+</script>
+
+</body>
+</html>
